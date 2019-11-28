@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if sess %}
+    <div>
+        <h1>{{ sess['username'] }}</h1>
+        <h2>Subscription Class: {{ sess['subscription'] }}</h1>
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="row" style="margin-top: 40px">
+            <div class="col-sm-6">
+                <ul>
+                    {% if sess %}
+                    <li class="col-sm-6"><a href="/logout" class="btn form-control btn-success">Logout</a></li>            
+                    {% else %}          
+                    <li class="col-sm-6"><a href="/login" class="btn form-control btn-success">Login</a></li>
+                    <li class="col-sm-6"><a href="/register" class="btn form-control btn-primary">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+{% endblock %}

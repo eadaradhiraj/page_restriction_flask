@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- <form class="page_dets_form" action="/update_page_details" method="POST"> -->
+      <table class="table page_dets_table">
+        <thead>
+          <th>Subscription Class</th>
+          <th>Start Page</th>
+          <th>End Page</th>
+        </thead>
+        <tbody>
+          {% for row in page_details %}
+          <tr>
+            <td col_name="subscription_class">{{ row.subscription_class }}</td>
+            <td col_name="start_page"><input name="start_page" value="{{ row.start_page }}"></td>
+            <td col_name="end_page"><input name="end_page" value="{{ row.end_page }}"></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button id="submit_table" class="btn form-control btn-default">Save</button>
+    <!-- </form> -->
+  <script>
+    function tableToJSON(selector) {
+      var body_htmls = document.querySelectorAll(selector+" tbody tr")
+      var list_objs = []
+      for (var i=0; i<body_htmls.length; i++) {
+        var obj = {}
+        obj[body_htmls[i].children[0].getAttribute('col_name')] = body_htmls[i].children[0].textContent
+        for (var j=1; j<body_htmls[i].children.length; j++) {
+          obj[body_htmls[i].children[j].getAttribute('col_name')] = parseInt(body_htmls[i].children[j].querySelector("input").value)
+        }
+        list_objs.push(obj)
+      }
+      return list_objs
+    }
+
+    function post_req() {
+      var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+      var theUrl = "update_page_details";
+      xmlhttp.open("POST", theUrl);
+      xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xmlhttp.send(JSON.stringify(tableToJSON("table")));
+    }
+    
+    document.querySelector("#submit_table").addEventListener('click', function(){
+      post_req()
+    })
+    document.querySelector("#submit_table").addEventListener('keypress', function(){
+      var key = e.which || e.keyCode;
+      if (key === 13) {
+        post_req()
+      }
+    })
+  </script>
+{% endblock %}
